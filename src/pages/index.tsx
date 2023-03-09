@@ -1,10 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Head from 'next/head';
 import { Inter } from 'next/font/google';
 import styles from '@/styles/Home.module.css';
 import { CldImage, CldUploadWidget } from 'next-cloudinary';
 
 const inter = Inter({ subsets: ['latin'] });
+
+interface UploadResult {
+  info: {
+    public_id: string;
+    original_filename: string;
+  };
+}
 
 const MEME_BACKGROUNDS = [
   {
@@ -34,29 +41,35 @@ export default function Home() {
     }
   }, []);
 
-  const handleTopText = (e: any) => {
+  const handleTopText = useCallback((e: any) => {
     setTopText(e.target.value);
-  };
+  }, []);
 
-  const handleBottomText = (e: any) => {
+  const handleBottomText = useCallback((e: any) => {
     setBottomText(e.target.value);
-  };
+  }, []);
 
-  const handleOnBackroundChange = (id: string) => {
+  const handleOnBackroundChange = useCallback((id: string) => {
     setBackground(id);
-  };
+  }, []);
 
-  const handleBackgroundUpload = (result: any) => {
-    setBackground(result.info.public_id);
-    console.log(result);
-    MEME_BACKGROUNDS.push({
-      id: result.info.public_id,
-      alt: result.info.original_filename,
-    });
+  const handleBackgroundUpload = useCallback(
+    (result: any) => {
+      setBackground(result.info.public_id);
+      console.log(result);
+      const newBackgrounds = [
+        ...memes,
+        {
+          id: result.info.public_id,
+          alt: result.info.original_filename,
+        },
+      ];
 
-    localStorage.setItem('meme_backgrounds', JSON.stringify(MEME_BACKGROUNDS));
-    setMemes(MEME_BACKGROUNDS);
-  };
+      localStorage.setItem('meme_backgrounds', JSON.stringify(newBackgrounds));
+      setMemes(newBackgrounds);
+    },
+    [memes]
+  );
 
   return (
     <>
