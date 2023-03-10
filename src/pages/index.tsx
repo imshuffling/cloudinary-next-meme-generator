@@ -17,14 +17,17 @@ const MEME_BACKGROUNDS = [
   {
     id: 'meme-backgrounds/5cwx89t4-1389586191_lfcpaf',
     alt: 'sample image',
+    active: true,
   },
   {
     id: 'meme-backgrounds/85f2cb5f-44f8-4f2f-a813-63e657e11acc_5065cac7_g2zw1m',
     alt: 'sample image',
+    active: false,
   },
   {
     id: 'meme-backgrounds/4a5001b7beea096457f480c8808572428b-09-roll-safe.2x.h473.w710_d3sfdy',
     alt: 'sample image',
+    active: false,
   },
 ];
 
@@ -36,8 +39,11 @@ export default function Home() {
 
   useEffect(() => {
     if (localStorage.getItem('meme_backgrounds') !== null) {
-      const savedTasks = JSON.parse(localStorage.getItem('meme_backgrounds')!);
-      setMemes(savedTasks);
+      const savedBgs = JSON.parse(localStorage.getItem('meme_backgrounds')!);
+      setMemes(savedBgs);
+
+      const activeBg = savedBgs.find((bg: any) => bg.active === true);
+      setBackground(activeBg.id);
     }
   }, []);
 
@@ -49,19 +55,40 @@ export default function Home() {
     setBottomText(e.target.value);
   }, []);
 
-  const handleOnBackroundChange = useCallback((id: string) => {
-    setBackground(id);
-  }, []);
+  const handleOnBackgroundChange = useCallback(
+    (id: string) => {
+      const updatedBackgrounds = memes.map((background) => {
+        if (background.id === id) {
+          return { ...background, active: true };
+        } else {
+          return { ...background, active: false };
+        }
+      });
+
+      setBackground(id);
+      localStorage.setItem(
+        'meme_backgrounds',
+        JSON.stringify(updatedBackgrounds)
+      );
+      setMemes(updatedBackgrounds);
+    },
+    [memes]
+  );
 
   const handleBackgroundUpload = useCallback(
     (result: any) => {
       setBackground(result.info.public_id);
-      console.log(result);
       const newBackgrounds = [
-        ...memes,
+        ...memes.map((background) => {
+          return {
+            ...background,
+            active: false,
+          };
+        }),
         {
           id: result.info.public_id,
           alt: result.info.original_filename,
+          active: true,
         },
       ];
 
@@ -131,10 +158,11 @@ export default function Home() {
                       Backgrounds
                     </label>
                     <ul className={styles.backgrounds}>
-                      {memes.map(({ id, alt }) => (
+                      {memes.map(({ id, alt, active }) => (
                         <li
                           key={id}
-                          onClick={() => handleOnBackroundChange(id)}
+                          onClick={() => handleOnBackgroundChange(id)}
+                          className={active ? styles.active : ''}
                         >
                           <CldImage
                             alt={alt}
