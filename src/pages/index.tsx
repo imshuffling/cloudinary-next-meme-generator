@@ -47,11 +47,27 @@ export default function Home() {
     }
   }, []);
 
+  useEffect(() => {
+    if (localStorage.getItem('top_text') !== null) {
+      const savedTopText = localStorage.getItem('top_text');
+      setTopText(savedTopText!);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (localStorage.getItem('bottom_text') !== null) {
+      const savedBottomText = localStorage.getItem('bottom_text');
+      setBottomText(savedBottomText!);
+    }
+  }, []);
+
   const handleTopText = useCallback((e: any) => {
+    localStorage.setItem('top_text', e.target.value);
     setTopText(e.target.value);
   }, []);
 
   const handleBottomText = useCallback((e: any) => {
+    localStorage.setItem('bottom_text', e.target.value);
     setBottomText(e.target.value);
   }, []);
 
@@ -128,6 +144,7 @@ export default function Home() {
                     className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                     placeholder='Top text'
                     onChange={handleTopText}
+                    value={topText ? topText : ''}
                   />
                 </div>
               </div>
@@ -147,6 +164,7 @@ export default function Home() {
                     className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                     placeholder='Bottom text'
                     onChange={handleBottomText}
+                    value={bottomText ? bottomText : ''}
                   />
                 </div>
               </div>
