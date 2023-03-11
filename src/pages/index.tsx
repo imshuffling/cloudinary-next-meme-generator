@@ -32,8 +32,8 @@ const MEME_BACKGROUNDS = [
 ];
 
 export default function Home() {
-  const [topText, setTopText] = useState('Top Text');
-  const [bottomText, setBottomText] = useState('Bottom Text');
+  const [topText, setTopText] = useState('This is a cool');
+  const [bottomText, setBottomText] = useState('meme generator');
   const [background, setBackground] = useState(MEME_BACKGROUNDS[0].id);
   const [memes, setMemes] = useState(MEME_BACKGROUNDS);
 
@@ -144,7 +144,7 @@ export default function Home() {
                     className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                     placeholder='Top text'
                     onChange={handleTopText}
-                    value={topText ? topText : ''}
+                    value={topText}
                   />
                 </div>
               </div>
@@ -164,7 +164,7 @@ export default function Home() {
                     className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                     placeholder='Bottom text'
                     onChange={handleBottomText}
-                    value={bottomText ? bottomText : ''}
+                    value={bottomText}
                   />
                 </div>
               </div>
