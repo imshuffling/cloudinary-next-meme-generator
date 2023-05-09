@@ -1,3 +1,5 @@
+![image](https://github.com/imshuffling/cloudinary-next-meme-generator/assets/739061/72032662-1b45-43e6-945a-ab8ca0b526cc)
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
